@@ -3,56 +3,43 @@
   // "layer": "top", // Waybar at top layer
   // "position": "bottom", // Waybar position (top|bottom|left|right)
   //"height": 30, // Waybar height (to be removed for auto height)
-  "width": 1366, // Waybar width
+  //"width": 1366, // Waybar width
   "spacing": 4, // Gaps between modules (4px)
   // Choose the order of the modules
   "modules-left": ["custom/power", "hyprland/workspaces"],
   "modules-center": ["hyprland/window"],
   "modules-right": [
-    "custom/media",
     "tray",
     "pulseaudio",
     "cpu",
     "memory",
     "temperature",
-    "keyboard-state",
     "clock"
   ],
-  "keyboard-state": {
-    "numlock": true,
-    "capslock": true,
-    "format": "{name} {icon}",
-    "format-icons": {
-      "locked": "",
-      "unlocked": ""
+  "hyprland/workspaces": {
+    "format": "<sub>{icon}</sub>{windows}",
+    "format-window-separator": " ",
+    "window-rewrite-default": "",
+    "window-rewrite": {
+      "title<.*vim.*>": "",
+      "title<.*youtube.*>": "",
+      "title<.*google.*>": "",
+      "title<.*google drive.*>": "",
+      "title<.*gmail.*>": "󰊫",
+      "title<.*.pdf>": "",
+      "title<.*whatsapp.*>": "",
+      "class<brave-browser>": "󰊯",
+      "class<brave-browser> title<.*github.*>": "",
+      "kitty": "",
+      "spotify": "",
+      "discord": "",
+      "gimp": "",
+      "code": "󰨞",
+      "Zathura": "",
+      "Libreoffice Writer": "",
+      "Libreoffice Calc": ""
     }
   },
-  /*"mpd": {
-    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
-    "format-disconnected": "Disconnected ",
-    "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
-    "unknown-tag": "N/A",
-    "interval": 5,
-    "consume-icons": {
-      "on": " "
-    },
-    "random-icons": {
-      "off": "<span color=\"#f53c3c\"></span> ",
-      "on": " "
-    },
-    "repeat-icons": {
-      "on": " "
-    },
-    "single-icons": {
-      "on": "1 "
-    },
-    "state-icons": {
-      "paused": "",
-      "playing": ""
-    },
-    "tooltip-format": "MPD (connected)",
-    "tooltip-format-disconnected": "MPD (disconnected)"
-  },*/
   "tray": {
     // "icon-size": 21,
     "spacing": 10
@@ -96,25 +83,13 @@
     },
     "on-click": "pavucontrol"
   },
-  "custom/media": {
-    "format": "{icon} {text}",
-    "return-type": "json",
-    "max-length": 40,
-    "format-icons": {
-      "spotify": "",
-      "default": "🎜"
-    },
-    "escape": true,
-    //"exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-    "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-  },
   "custom/power": {
-    "format": "⏻",
+    "format": "",
     "tooltip": false,
     "menu": "on-click",
     "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
     "menu-actions": {
-      "shutdown": "shutdown",
+      "shutdown": "poweroff",
       "reboot": "reboot",
       "suspend": "systemctl suspend",
       "hibernate": "systemctl hibernate"
