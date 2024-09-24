@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+# Capture the screenshot
+output=$(grim -g "$(slurp -d)" - 2>&1)
+
+# Check if the command was successful
+if [[ $? -eq 0 ]]; then
+    wl-copy <<< "$output"  # Copy the screenshot to clipboard
+    notify-send -u low -t 3000 "Hyprland" "Screenshot taken"
+else
+    # Handle errors
+    if [[ "$output" == *"selection cancelled"* ]]; then
+        notify-send -u low -t 3000 "Hyprland" "Screenshot selection cancelled."
+    elif [[ "$output" == *"invalid geometry"* ]]; then
+        notify-send -u low -t 3000 "Hyprland" "Invalid geometry specified."
+    else
+        notify-send -u low -t 3000 "Hyprland" "Error: $output"
+    fi
+fi
