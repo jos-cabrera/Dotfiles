@@ -1,0 +1,68 @@
+#!/usr/bin/env zsh
+
+# Function to get current gap values
+get_gaps() {
+  gaps_in=$(hyprctl -j getoption general:gaps_in | jq -r '.custom')
+  gaps_out=$(hyprctl -j getoption general:gaps_out | jq -r '.custom')
+}
+
+# Function to set the gap value
+set_gap() {
+  local type=$1
+  shift  # Shift off the first argument (type)
+
+  # Join new values into a space-separated string
+  local new_value_str="${(j: :)@}"
+
+  hyprctl keyword "general:gaps_$type" "$new_value_str"
+  printf "Updated gaps_%s to %s\n" "$type" "$new_value_str"
+}
+
+# Functions to increase/decrease gaps
+inc_gaps_in() {
+  get_gaps
+  local new_values=()
+  for value in ${(s: :)gaps_in}; do
+    new_values+=($((value + 2)))
+  done
+  set_gap in "${new_values[@]}"
+}
+
+dec_gaps_in() {
+  get_gaps
+  local new_values=()
+  for value in ${(s: :)gaps_in}; do
+    new_values+=($((value - 2)))
+  done
+  set_gap in "${new_values[@]}"
+}
+
+inc_gaps_out() {
+  get_gaps
+  local new_values=()
+  for value in ${(s: :)gaps_out}; do
+    new_values+=($((value + 2)))
+  done
+  set_gap out "${new_values[@]}"
+}
+
+dec_gaps_out() {
+  get_gaps
+  local new_values=()
+  for value in ${(s: :)gaps_out}; do
+    new_values+=($((value - 2)))
+  done
+  set_gap out "${new_values[@]}"
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --inc_gaps_in)   inc_gaps_in;   shift ;;
+    --dec_gaps_in)   dec_gaps_in;   shift ;;
+    --inc_gaps_out)  inc_gaps_out;  shift ;;
+    --dec_gaps_out)  dec_gaps_out;  shift ;;
+    *)               printf "Error: Unknown option %s\n" "$1"; exit 1 ;;
+  esac
+done
+
